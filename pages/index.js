@@ -7,6 +7,8 @@ export default function HomePage() {
   const [account, setAccount] = useState(undefined);
   const [atm, setATM] = useState(undefined);
   const [balance, setBalance] = useState(undefined);
+  const [gasLeft, setGasLeft] = useState(undefined);
+  const [timeStamp, setBlockTime] = useState(undefined);
 
   const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   const atmABI = atm_abi.abi;
@@ -75,6 +77,20 @@ export default function HomePage() {
     }
   }
 
+  const getGasLeft = async() => {
+    if (atm) {
+      let tx = await atm.getGasLeft();
+      setGasLeft(tx.toNumber());
+    }
+  }
+
+  const getTimeStamp = async() => {
+    if (atm) {
+      let tx = await atm.timestampCurrentBlock();
+      setBlockTime(tx.toNumber());
+    }
+  }
+
   const initUser = () => {
     // Check to see if user has Metamask
     if (!ethWallet) {
@@ -96,6 +112,14 @@ export default function HomePage() {
         <p>Your Balance: {balance}</p>
         <button onClick={deposit}>Deposit 1 ETH</button>
         <button onClick={withdraw}>Withdraw 1 ETH</button>
+        <button onClick={getGasLeft}>Check Gas Remaining</button>
+          {
+            gasLeft !== undefined && <p> Gas Remaining: {gasLeft}</p>
+          }
+        <p><button onClick={getTimeStamp}>Check TimeStamp for current block</button></p>
+          {
+            timeStamp !== undefined && <p> TimeStamp: {timeStamp}</p>
+          }
       </div>
     )
   }

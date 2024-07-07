@@ -56,5 +56,15 @@ contract Assessment {
 
         // emit the event
         emit Withdraw(_withdrawAmount);
+
     }
+
+    function getGasLeft() public view returns(uint){
+        return gasleft();
+    }
+
+    function timestampCurrentBlock() public view returns(uint) {
+        return block.timestamp;
+    }
+
 }
